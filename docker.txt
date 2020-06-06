@@ -1,0 +1,24 @@
+docker run hello-world
+docker ps -a
+docker ps -l
+
+# to create image from container
+docker commit <container id>
+docker tag <id-from-prev-cmd> my-image-name
+
+or
+docker commit <container id> my-image-name2
+
+##
+docker run --rm -ti ubuntu sleep 5
+docker run --rm -ti ubuntu bash -c "sleep 3; echo all done"
+
+## Run in background
+docker run -d -ti ubuntu bash
+docker ps
+docker attach <container-id or container-name>
+ctrl + p ctrl + q
+
+docker logs <container-name>
+docker rm <container-id or container-name>
+docker kill <container-id or container-name>

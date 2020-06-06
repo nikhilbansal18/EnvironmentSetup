@@ -1,0 +1,67 @@
+sudo su -
+sudo apt update
+sudo apt upgrade
+sudo apt install nginx
+nginx -v
+systemctl status nginx
+
+cd /etc/nginx
+sites-available
+cd /var/log/nginx
+cd /var/www/
+
+systemctl stop nginx
+systemctl start nginx
+systemctl is-active nginx
+systemctl reload nginx
+
+nginx -h
+
+Configuration test
+nginx -t
+nginx -T
+
+cd /etc/nginx/sites-enabled
+unlink default
+
+find /var/www/wisdompetmed.local/ -type f -exec chmod 644 {} \;
+find /var/www/wisdompetmed.local/ -type d -exec chmod 755 {} \;
+
+access_log /var/log/nginx/wisdompetmed.access.log;
+error_log /var/log/nginx/wisdompetmed.error.log;
+
+for i in {1..10}; do curl localhost > /dev/null;done
+for i in {1..10}; do curl localhost/images > /dev/null;done
+
+netstat -plan | grep nginx
+
+apt install php-fpm php-mysql
+apt install mariadb-server mariadb-client
+
+systemctl status mysqld.service
+mysql_secure_installation
+
+mysql -u root -p
+create database if not exists appointments;
+create user if not exists 'admin';
+grant all on appointments.* to 'admin'@'localhost' identified by 'admin';
+
+mysql -u admin -p
+show databases;
+use appointments;
+show tables;
+
+mysql -u admin -padmin appointments < appointment_database.sql
+
+---------------
+apt install apache2-utils -y
+htpasswd -c /etc/nginx/passwords admin
+htpasswd /etc/nginx/passwords user1
+htpasswd /etc/nginx/passwords user2
+
+chown www-data /etc/nginx/passwords
+chmod 600 /etc/nginx/passwords
+
+which openssl
+apt install openssl -y
+openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout /etc/ssl/private/nginx.key -out /etc/ssl/certs/nginx.crt
